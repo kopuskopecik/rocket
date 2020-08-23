@@ -1,8 +1,18 @@
-# Django Backend Take Home Project
+# Rocket.Chat Rest API Web Application
 
-Parking, Unparking, getting parking info and rate limit for requests
+The Basic local chat web application using rocketchat_API of Pyhton. This application has ability to send messages from channels and also direct messages.
 
 ## Installation
+
+Firstly please follow instructions on [this link](https://docs.rocket.chat/guides/developer/quick-start) to create server locally for Linux. 
+
+For Windows 10 [this link](https://docs.rocket.chat/guides/developer/developing-on-windows-10)
+
+Please start server and then login the system and record your credentials. Because we use them in Python side.
+
+```bash
+git clone https://github.com/kopuskopecik/rocket.git
+```
 
 create virtual enviroment
 
@@ -27,60 +37,37 @@ upgrate pip
 python -m pip install --upgrade pip
 ```
 
-install django
+Installing Python requirements(django, requests, rocketchat_API)
 
 ```bash
-pip install django
+pip install -r requirements.txt
 ```
+
+create channels, users and messages otomatically
+
+```bash
+python manage.py create_channels
+```
+
 
 ## Usage
 
-```bash
-python manage.py makemigrations
-python manage.py migrate 
+To login RocketServer set your credentials in rocket/settings.py  like below. I ignore security but If you want you can use python-decouple.
+
+```python
+PROXY_DICT = {
+        "http"  : "http://127.0.0.1:3000",
+        "https" : "https://127.0.0.1:3000",
+    }
+
+ROCKET_USERNAME = "sahinturk"
+ROCKET_PASSWORD = "Aa123456"
+SERVER_URL = "http://127.0.0.1:3000/"
+
 ```
 
-create parking slots and .env file like below this. 20 is number of parking slots. You can change whenever you want.
-
-```bash  
-python manage.py create_slot 20
-```
-
-## Note
-
-You can test all URLs and overflow below [localhost](http://127.0.0.1:8000/) webpage.
-
-## Settings
-In the setting file you can change OVERFLOW_REQUEST_NUMBER and OVERFLOW_REQUEST_TIME.
-Both default values are 10. 
-
+and then run Django server
 
 ```bash
-python manage.py makemigrations
-python manage.py migrate 
-```
-
-create parking slots and .env file like below this. 20 is number of parking slots. You can change whenever you want.
-
-```bash  
-python manage.py create_slot 20
-```
-
-and runserver
-
-```bash  
 python manage.py runserver
 ```
-
-## Note
-
-On the below address You can test Url actions and owerflow for requests.
-
-[localhost](http://127.0.0.1:8000/)
-
-## Explanations
-
-session(Limit) to see requests of a spesific IP_adress and prevent overflow requests.
-A custom django command(create_slot) to create number of parking slots and .env file.
-A custom decorator(rate_limit) for the views to prevent duplicate.
-A templatetag(random_int) to obtain a random value for cars.
